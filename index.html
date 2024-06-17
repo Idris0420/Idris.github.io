@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+        <div id="container">
+            <img src="certificate.png" alt="certificate" id="cert">
+            <img src="fingerprint.png" alt="fingerprint" id="fprint">
+        </div>
+        <audio id="music" src="Music.mp3"></audio>
+        <script src="script.js"></script>
+
+
+
+
+
+    <script>
+        document.getElementById('fprint').addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+    
+        document.getElementById('fprint').addEventListener('mousedown', function(event) {
+            if (event.button === 2) { // Right-click
+                event.preventDefault();
+            }
+        });
+    
+        document.getElementById('fprint').addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) { // Long-press
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const fprint = document.getElementById('fprint');
+            const cert = document.getElementById('cert');
+            const audio = document.getElementById('music');
+            
+            let pressTimer;
+            let certShown = false; // Flag to track if certificate has been shown
+        
+            fprint.addEventListener('mousedown', startPress);
+            fprint.addEventListener('touchstart', startPress);
+            
+            fprint.addEventListener('mouseup', cancelPress);
+            fprint.addEventListener('mouseleave', cancelPress);
+            fprint.addEventListener('touchend', cancelPress);
+        
+            function startPress(event) {
+                event.preventDefault();
+                pressTimer = setTimeout(() => {
+                    showCertificate();
+                }, 500); // Adjust the time as needed for a long-press
+            }
+        
+            function cancelPress() {
+                clearTimeout(pressTimer);
+                if (!certShown) { // Only hide the certificate if it hasn't been shown
+                    cert.style.opacity = 0;
+                    audio.pause();
+                    audio.currentTime = 0; // Reset the audio to the beginning
+                }
+            }
+        
+            function showCertificate() {
+                cert.style.opacity = 1;
+                audio.play();
+                certShown = true; // Set flag to true once the certificate is shown
+            }
+        
+            // Prevent default context menu on right-click or long press
+            fprint.addEventListener('contextmenu', function(event) {
+                event.preventDefault();
+            });
+        
+            fprint.addEventListener('mousedown', function(event) {
+                if (event.button === 2) { // Right-click
+                    event.preventDefault();
+                }
+            });
+        
+            fprint.addEventListener('touchstart', function(event) {
+                if (event.touches.length > 1) { // Long-press
+                    event.preventDefault();
+                }
+            });
+        });
+        
+    </script>
+    <script src="hello.js"></script>
+</body>
+</html>
